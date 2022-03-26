@@ -20,6 +20,6 @@ async function bootstrap() {
     },
   );
 
-  app.listen(8080);
+  await app.listen(8080);
 }
 bootstrap();
