@@ -43,14 +43,12 @@ function chart(selector, xValues, yValues) {
 async function testConnection(url, selector = '.indecator.http') {
   const indecator = document.querySelector(selector);
 
-  try {
-    await fetch(url, {
-      method: 'GET',
-      redirect: 'follow',
-    });
-  } catch (err) {
-    connectSucceful(indecator, false);
-  }
+  connectSucceful(indecator, false);
+
+  const response = await fetch(url, {
+    method: 'GET',
+    redirect: 'follow',
+  });
 
   connectSucceful(indecator);
 }
@@ -85,4 +83,4 @@ searchButtom.onclick = async () => {
 
 setInterval(() => {
   testConnection(url);
-});
+}, 60000);
