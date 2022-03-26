@@ -10,15 +10,15 @@ async function bootstrap() {
     origin: '*',
   });
 
-  axios.interceptors.request.use(
-    function (config) {
-      config['metadata'] = { startTime: moment().valueOf() };
-      return config;
-    },
-    function (error) {
-      return Promise.reject(error);
-    },
-  );
+  // axios.interceptors.request.use(
+  //   function (config) {
+  //     config['metadata'] = { startTime: moment().valueOf() };
+  //     return config;
+  //   },
+  //   function (error) {
+  //     return Promise.reject(error);
+  //   },
+  // );
 
   await app.listen(8080);
 }
