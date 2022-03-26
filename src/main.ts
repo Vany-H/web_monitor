@@ -24,6 +24,6 @@ async function bootstrap() {
 
   ConfigModule.forRoot();
 
-  await app.listen(3000);
+  await app.listen(80);
 }
 bootstrap();
