@@ -1,7 +1,5 @@
-import { ConfigModule } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import axios from 'axios';
-import { exec } from 'child_process';
 import { AppModule } from './app.module';
 import * as moment from 'moment';
 
@@ -22,8 +20,6 @@ async function bootstrap() {
     },
   );
 
-  ConfigModule.forRoot();
-
-  await app.listen(5000);
+  await app.listen(8080);
 }
 bootstrap();
