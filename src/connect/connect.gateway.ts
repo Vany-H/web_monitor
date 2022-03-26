@@ -70,6 +70,13 @@ export class ControllerGateway implements OnGatewayConnection {
     socket.emit('connection', 'Hello world!');
   }
 
+  handleDisconnect(socket: Socket) {
+    if (!!this.arrayURLs.filter((el) => socket.id === el.socket.id).length)
+      this.arrayURLs.forEach((el, index) => {
+        if (socket.id === el.socket.id) this.arrayURLs.splice(index, 1);
+      });
+  }
+
   @SubscribeMessage('connection-ip')
   async setEevent(
     @MessageBody() { url }: InSocket,
@@ -81,10 +88,6 @@ export class ControllerGateway implements OnGatewayConnection {
       });
 
       socket.emit('clear');
-    }
-
-    this.arrayURLs.push({ socket, url });
-
-    // return 'Ok';
+    } else this.arrayURLs.push({ socket, url });
   }
 }
