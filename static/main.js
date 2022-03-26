@@ -1,6 +1,6 @@
 const flag = false;
 const socket = io();
-const url = 'https://monitor-for.herokuapp.com/';
+const url = 'https://monitor-for.herokuapp.com';
 
 const searchButtom = document.querySelector('.search-button');
 const searchString = document.querySelector('.search-bar');
