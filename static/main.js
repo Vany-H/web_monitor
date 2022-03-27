@@ -55,10 +55,13 @@ async function testConnection(url, selector = '.indecator.http') {
 }
 
 async function getInfoOfIp(searchUrl) {
-  const response = await fetch(`${url}/connect/info?url=${searchUrl}`, {
-    method: 'GET',
-    redirect: 'follow',
-  }).then((data) => data.json());
+  const response = await fetch(
+    `${url.replace(/\/$/gm, '')}/connect/info?url=${searchUrl}`,
+    {
+      method: 'GET',
+      redirect: 'follow',
+    },
+  ).then((data) => data.json());
 
   return response;
 }
