@@ -22,6 +22,8 @@ import { HttpHealthIndicator } from '@nestjs/terminus';
 export class ControllerGateway implements OnGatewayConnection {
   private arrayURLs: SocketOne[] = [];
 
+  private readonly regexp = /http:\/\/|https:\/\//gm;
+
   constructor(
     private httpService: HttpService,
     private http: HttpHealthIndicator,
@@ -29,7 +31,11 @@ export class ControllerGateway implements OnGatewayConnection {
     setInterval(() => {
       this.arrayURLs.forEach(async (el) => {
         const answere = await axios.get(
-          `${el.url.includes('http://') ? el.url : `http://${el.url}`}`,
+          `${
+            el.url.includes('http://') || el.url.includes('https://')
+              ? el.url
+              : `http://${el.url}`
+          }`,
         );
         if (answere.status > 499) el.socket.emit('dead', 'dead');
 
@@ -46,13 +52,17 @@ export class ControllerGateway implements OnGatewayConnection {
 
         const updTime = moment().valueOf();
         const response = await this.http.pingCheck(
-          el.url.replace('http://', ''),
-          `${el.url.includes('http://') ? el.url : `http://${el.url}`}`,
+          el.url.replace(this.regexp, ''),
+          `${
+            el.url.includes('http://') || el.url.includes('https://')
+              ? el.url
+              : `http://${el.url}`
+          }`,
         );
 
         el.socket.emit(
           'ping-data',
-          response[el.url.replace('http://', '')]['status'] === 'up'
+          response[el.url.replace(this.regexp, '')]['status'] === 'up'
             ? {
                 date: moment().format('LTS'),
                 ms: moment().valueOf() - updTime,
