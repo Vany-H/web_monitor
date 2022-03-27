@@ -52,7 +52,8 @@ function chartDead(name) {
 function chartCominSoon(name) {
   const canvas = document.getElementById(name);
   const ctx = canvas.getContext('2d');
-  ctx.font = '44px Comic Sans MS';
+  ctx.font = '40px Comic Sans MS';
+  ctx.fillStyle = 'white';
   ctx.fillText('COMING SOON', 0, canvas.height / 2);
 }
 
