@@ -22,7 +22,6 @@ async function bootstrap() {
       return Promise.reject(error);
     },
   );
-  //
 
   await app.listen(process.env.PORT || 8080);
 }
