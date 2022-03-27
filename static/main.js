@@ -41,6 +41,21 @@ function chart(selector, xValues, yValues) {
   });
 }
 
+function chartDead(name) {
+  const canvas = document.getElementById(name);
+  const ctx = canvas.getContext('2d');
+  ctx.font = '44px Comic Sans MS';
+  ctx.fillStyle = 'red';
+  ctx.fillText('SERVER DEAD', 0, canvas.height / 2);
+}
+
+function chartCominSoon(name) {
+  const canvas = document.getElementById(name);
+  const ctx = canvas.getContext('2d');
+  ctx.font = '44px Comic Sans MS';
+  ctx.fillText('COMING SOON', 0, canvas.height / 2);
+}
+
 async function testConnection(url, selector = '.indecator.http') {
   const indecator = document.querySelector(selector);
 
@@ -84,6 +99,8 @@ searchButtom.onclick = async () => {
 
   socket.emit('connection-ip', { url: searchString.value });
 };
+
+chartCominSoon('upd');
 
 setInterval(() => {
   testConnection(url);

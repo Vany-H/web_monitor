@@ -6,11 +6,7 @@ socket.on('connection', (data) => {
 
 socket.on('http-data', (data) => {
   if (data === 'dead') {
-    const canvas = document.getElementById('http');
-    const ctx = canvas.getContext('2d');
-    ctx.font = '44px Comic Sans MS';
-    ctx.fillStyle = 'red';
-    ctx.fillText('SERVER DEAD', 0, canvas.height / 2);
+    chartDead('http');
 
     return;
   }
@@ -24,11 +20,7 @@ socket.on('http-data', (data) => {
 socket.on('ping-data', (data) => {
   console.log(data);
   if (data === 'dead') {
-    const canvas = document.getElementById('ping');
-    const ctx = canvas.getContext('2d');
-    ctx.font = '44px Comic Sans MS';
-    ctx.fillStyle = 'red';
-    ctx.fillText('SERVER DEAD', 0, canvas.height / 2);
+    chartDead('ping');
 
     return;
   }
