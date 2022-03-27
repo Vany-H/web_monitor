@@ -72,7 +72,7 @@ async function testConnection(url, selector = '.indecator.http') {
 
 async function getInfoOfIp(searchUrl) {
   const response = await fetch(
-    `${url.replace(/\/$/gm, '')}/connect/info?url=${searchUrl}`,
+    `${url}/connect/info?url=${searchUrl.replace(/\/$/gm, '')}`,
     {
       method: 'GET',
       redirect: 'follow',
