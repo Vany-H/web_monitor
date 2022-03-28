@@ -29,8 +29,6 @@ export class ControllerGateway implements OnGatewayConnection {
     private http: HttpHealthIndicator,
   ) {
     setInterval(() => {
-      console.log(this.arrayURLs);
-
       this.arrayURLs.forEach(async (el) => {
         let answere: AxiosResponse<any, any> | undefined;
 
