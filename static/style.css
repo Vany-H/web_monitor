@@ -85,7 +85,7 @@ canvas {
   overflow-x: hidden;
 
   width: 90%;
-  height: 80%;
+  height: 40vh;
 }
 .info-div::-webkit-scrollbar {
   display: none;

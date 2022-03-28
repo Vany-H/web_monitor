@@ -1,0 +1,16 @@
+.color-orange,
+.warning {
+  color: orange;
+}
+
+.log {
+  color: rgb(0, 146, 0);
+}
+
+.error {
+  color: red;
+}
+
+.color-white {
+  color: white;
+}

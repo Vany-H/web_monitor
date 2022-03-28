@@ -7,7 +7,7 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { Server, Socket } from 'socket.io';
 import { InSocket, SocketOne } from './types';
 
@@ -30,45 +30,48 @@ export class ControllerGateway implements OnGatewayConnection {
   ) {
     setInterval(() => {
       this.arrayURLs.forEach(async (el) => {
-        const answere = await axios.get(
-          `${
-            el.url.includes('http://') || el.url.includes('https://')
-              ? el.url
-              : `http://${el.url}`
-          }`,
-        );
-        if (answere.status > 499) el.socket.emit('dead', 'dead');
+        let answere: AxiosResponse<any, any> | undefined;
 
-        el.socket.emit(
-          'http-data',
-          answere.status < 499
-            ? {
-                date: moment().format('LTS'),
-                ms:
-                  moment().valueOf() - answere.config['metadata']['startTime'],
-              }
-            : 'dead',
-        );
+        try {
+          answere = await axios.get(
+            `${
+              el.url.includes('http://') || el.url.includes('https://')
+                ? el.url
+                : `http://${el.url}`
+            }`,
+          );
 
-        const updTime = moment().valueOf();
-        const response = await this.http.pingCheck(
-          el.url.replace(this.regexp, ''),
-          `${
-            el.url.includes('http://') || el.url.includes('https://')
-              ? el.url
-              : `http://${el.url}`
-          }`,
-        );
+          if (answere.status > 499) el.socket.emit('http-dead');
 
-        el.socket.emit(
-          'ping-data',
-          response[el.url.replace(this.regexp, '')]['status'] === 'up'
-            ? {
-                date: moment().format('LTS'),
-                ms: moment().valueOf() - updTime,
-              }
-            : 'dead',
-        );
+          el.socket.emit('http-data', {
+            date: moment().format('LTS'),
+            ms: moment().valueOf() - answere.config['metadata']['startTime'],
+          });
+        } catch {
+          el.socket.emit('http-error');
+        }
+
+        try {
+          const updTime = moment().valueOf();
+          const response = await this.http.pingCheck(
+            el.url.replace(this.regexp, ''),
+            `${
+              el.url.includes('http://') || el.url.includes('https://')
+                ? el.url
+                : `http://${el.url}`
+            }`,
+          );
+
+          if (response[el.url.replace(this.regexp, '')]['status'] !== 'up')
+            el.socket.emit('ping-dead');
+
+          el.socket.emit('ping-data', {
+            date: moment().format('LTS'),
+            ms: moment().valueOf() - updTime,
+          });
+        } catch {
+          el.socket.emit('ping-error');
+        }
       });
     }, 10000);
   }
@@ -96,8 +99,9 @@ export class ControllerGateway implements OnGatewayConnection {
       this.arrayURLs.forEach((el, index) => {
         if (socket.id === el.socket.id) this.arrayURLs[index].url = url;
       });
-
       socket.emit('clear');
     } else this.arrayURLs.push({ socket, url });
+
+    socket.emit('done');
   }
 }

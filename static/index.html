@@ -6,11 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
     <link rel="stylesheet" href="./inpu-style.css" />
+    <link rel="stylesheet" href="./log-style.css" />
     <title>Document</title>
   </head>
   <body>
     <script src="/socket.io/socket.io.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script src="https://momentjs.com/downloads/moment.js"></script>
 
     <div class="box-border-purple flex-display-column not-center-flex">
       <h5 style="margin: 4% 0 0">HTTP:</h5>
@@ -25,7 +27,7 @@
         by Browser
       </div>
       <div
-        class="info-div flex-display-column not-center-flex flex-display"
+        class="info-div flex-display-column not-center-flex flex-display serv-info"
       ></div>
     </div>
     <div class="box-border-purple flex-display-column not-center-flex">
@@ -39,7 +41,11 @@
         <div class="indecator disconect socket" style="margin: 0 0.5vw"></div>
       </div>
 
-      <div class="box-display-linear" style="margin: 2vh 0">Beta 0.1.2</div>
+      <div class="box-display-linear" style="margin: 2vh 0">Beta 0.2.0</div>
+
+      <div
+        class="info-div flex-display-column not-center-flex flex-display logs"
+      ></div>
     </div>
     <div class="box-border-purple flex-display-column not-center-flex">
       <h5 style="margin: 4% 0 0">PING:</h5>
@@ -56,5 +62,6 @@
 
     <script defer src="./main.js"></script>
     <script defer src="./sockets-functions.js"></script>
+    <script defer src="./browser-monitor.js"></script>
   </body>
 </html>

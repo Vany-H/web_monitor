@@ -4,32 +4,44 @@ socket.on('connection', (data) => {
   connectSucceful(indecator);
 });
 
+//HHTP-------------------------------------------------------------
+
 socket.on('http-data', (data) => {
-  if (data === 'dead') {
-    chartDead('http');
-
-    return;
-  }
-
   timeRequest.push(data.ms);
   timeStamp.push(data.date);
 
   chart('http', timeStamp, timeRequest);
 });
 
+socket.on('http-error', (data) => {
+  charError('http');
+  addLog('Server http error', 'error');
+});
+
+socket.on('http-dead', (data) => {
+  chartDead('http');
+  addLog('Target dead', 'warning');
+});
+
+//PING-------------------------------------------------------------
+
 socket.on('ping-data', (data) => {
-  console.log(data);
-  if (data === 'dead') {
-    chartDead('ping');
-
-    return;
-  }
-
   timePingRequest.push(data.ms);
   timePingStamp.push(data.date);
 
   chart('ping', timePingStamp, timePingRequest);
 });
+
+socket.on('ping-error', (data) => {
+  charError('ping');
+  addLog('Server ping error', 'error');
+});
+
+socket.on('ping-dead', (data) => {
+  chartDead('ping');
+});
+
+//CLEAR-------------------------------------------------------------
 
 socket.on('clear', (data) => {
   timePingRequest = [];

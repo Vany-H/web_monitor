@@ -1,6 +1,6 @@
 .check-box,
 .indecator {
-  transition: all;
+  transition: all 0.2s;
   height: 2vh;
   width: 2vh;
 }
@@ -91,12 +91,4 @@
 
 .pading-1 {
   padding-left: 1vw;
-}
-
-.color-orange {
-  color: orange;
-}
-
-.color-white {
-  color: white;
 }
