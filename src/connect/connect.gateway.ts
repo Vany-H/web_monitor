@@ -29,6 +29,8 @@ export class ControllerGateway implements OnGatewayConnection {
     private http: HttpHealthIndicator,
   ) {
     setInterval(() => {
+      console.log(this.arrayURLs);
+
       this.arrayURLs.forEach(async (el) => {
         let answere: AxiosResponse<any, any> | undefined;
 
@@ -97,8 +99,9 @@ export class ControllerGateway implements OnGatewayConnection {
   ) {
     if (!!this.arrayURLs.filter((el) => socket.id === el.socket.id).length) {
       this.arrayURLs.forEach((el, index) => {
-        if (socket.id === el.socket.id) this.arrayURLs[index].url = url;
+        if (socket.id === el.socket.id) this.arrayURLs.splice(index, 1);
       });
+      this.arrayURLs.push({ socket, url });
       socket.emit('clear');
     } else this.arrayURLs.push({ socket, url });
 

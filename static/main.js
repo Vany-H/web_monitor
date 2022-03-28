@@ -2,8 +2,8 @@ let flag = false;
 
 const socket = io();
 // const url = 'https://monitor-for.herokuapp.com';
-// const url = 'http://localhost:8080';
-const url = 'http://185.143.220.239:8080';
+const url = 'http://localhost:8080';
+// const url = 'http://185.143.220.239:8080';
 const intervalsArray = [];
 
 const searchButtom = document.querySelector('.search-button');
