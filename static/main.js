@@ -2,7 +2,8 @@ let flag = false;
 
 const socket = io();
 // const url = 'https://monitor-for.herokuapp.com';
-const url = 'http://localhost:8080';
+// const url = 'http://localhost:8080';
+const url = 'http://185.143.220.239:8080';
 const intervalsArray = [];
 
 const searchButtom = document.querySelector('.search-button');
@@ -84,13 +85,15 @@ async function testConnection(url, selector = '.indecator.http') {
   const indecator = document.querySelector(selector);
 
   connectSucceful(indecator, false);
-
-  const response = await fetch(url, {
-    method: 'GET',
-    redirect: 'follow',
-  });
-
-  connectSucceful(indecator);
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      redirect: 'follow',
+    });
+    connectSucceful(indecator);
+  } catch (error) {
+    addLog(error, 'error');
+  }
 }
 
 async function getInfoOfIp(searchUrl) {
