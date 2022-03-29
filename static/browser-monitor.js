@@ -41,6 +41,7 @@ async function moveOnBrowser(url) {
   chart('http', timeStamp, timeRequest);
 
   chartNotWork('ping');
+  chartNotWork('HvSS');
   sendRequest(url);
 }
 
@@ -55,5 +56,6 @@ async function moveOffBrowser(url) {
   timeStamp = [];
 
   chart('ping', timePingStamp, timePingRequest);
+  chart('HvSS', timePingStamp, timePingRequest);
   chart('http', timeStamp, timeRequest);
 }

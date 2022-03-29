@@ -18,6 +18,9 @@ let timeStamp = [];
 let timePingRequest = [];
 let timePingStamp = [];
 
+let timeHvSSRequest = [];
+let timeHvSSStamp = [];
+
 function connectSucceful(DOMElement, flagConnect = true) {
   DOMElement.classList.add(`${flagConnect ? 'connect' : 'disconect'}`);
   DOMElement.classList.remove(`${!flagConnect ? 'connect' : 'disconect'}`);
@@ -134,7 +137,7 @@ function addLog(message, type, title) {
 }
 
 testConnection(url);
-chartCominSoon('upd');
+// chartCominSoon('upd');
 
 checkBrowser.onclick = async () => {
   flag = !flag;

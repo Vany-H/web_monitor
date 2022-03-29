@@ -13,6 +13,7 @@ import { InSocket, SocketOne } from './types';
 
 import * as moment from 'moment';
 import { HttpHealthIndicator } from '@nestjs/terminus';
+import { ConnectService } from './connect.service';
 
 @WebSocketGateway({
   cors: {
@@ -26,54 +27,31 @@ export class ControllerGateway implements OnGatewayConnection {
 
   constructor(
     private httpService: HttpService,
-    private http: HttpHealthIndicator,
+    private readonly connectService: ConnectService,
   ) {
     setInterval(() => {
       this.arrayURLs.forEach(async (el) => {
         let answere: AxiosResponse<any, any> | undefined;
 
-        try {
-          answere = await axios.get(
-            `${
-              el.url.includes('http://') || el.url.includes('https://')
-                ? el.url
-                : `http://${el.url}`
-            }`,
-          );
+        this.connectService.sendHttpData(el.url, el.socket);
 
-          if (answere.status > 499) el.socket.emit('http-dead');
-
-          el.socket.emit('http-data', {
-            date: moment().format('LTS'),
-            ms: moment().valueOf() - answere.config['metadata']['startTime'],
-          });
-        } catch {
-          el.socket.emit('http-error');
-        }
+        this.connectService.pingHost(el.url, el.socket);
 
         try {
-          const updTime = moment().valueOf();
-          const response = await this.http.pingCheck(
-            el.url.replace(this.regexp, ''),
-            `${
-              el.url.includes('http://') || el.url.includes('https://')
-                ? el.url
-                : `http://${el.url}`
-            }`,
-          );
+          const [resp] = await this.connectService.checkHostHttp(el.url);
 
-          if (response[el.url.replace(this.regexp, '')]['status'] !== 'up')
-            el.socket.emit('ping-dead');
+          if (resp.message === 'Connection timed out')
+            el.socket.emit('HvSS-dead');
 
-          el.socket.emit('ping-data', {
+          el.socket.emit('HvSS-data', {
             date: moment().format('LTS'),
-            ms: moment().valueOf() - updTime,
+            ms: resp.time * 1000,
           });
         } catch {
-          el.socket.emit('ping-error');
+          el.socket.emit('HvSS-error');
         }
       });
-    }, 10000);
+    }, 15000);
   }
 
   @WebSocketServer()

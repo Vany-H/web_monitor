@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ControllerGateway } from './connect/connect.gateway';
 import { ConnectModule } from './connect/connect.module';
+import { ConnectService } from './connect/connect.service';
 
 @Module({
   imports: [
@@ -19,6 +20,6 @@ import { ConnectModule } from './connect/connect.module';
     TerminusModule,
   ],
   controllers: [AppController],
-  providers: [AppService, ControllerGateway],
+  providers: [AppService, ControllerGateway, ConnectService],
 })
 export class AppModule {}

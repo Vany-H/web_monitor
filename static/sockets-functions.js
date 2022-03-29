@@ -41,6 +41,24 @@ socket.on('ping-dead', (data) => {
   chartDead('ping');
 });
 
+//HvSS-------------------------------------------------------------
+
+socket.on('HvSS-data', (data) => {
+  timeHvSSRequest.push(data.ms);
+  timeHvSSStamp.push(data.date);
+
+  chart('HvSS', timeHvSSStamp, timeHvSSRequest);
+});
+
+socket.on('HvSS-error', (data) => {
+  charError('HvSS');
+  addLog('Server HvSS error', 'error');
+});
+
+socket.on('HvSS-dead', (data) => {
+  chartDead('HvSS');
+});
+
 //CLEAR-------------------------------------------------------------
 
 socket.on('clear', (data) => {
@@ -48,7 +66,10 @@ socket.on('clear', (data) => {
   timePingStamp = [];
   timeRequest = [];
   timeStamp = [];
+  timeHvSSRequest = [];
+  timeHvSSStamp = [];
 
   chart('ping', timePingStamp, timePingRequest);
   chart('http', timeStamp, timeRequest);
+  chart('HvSS', timeStamp, timeRequest);
 });
